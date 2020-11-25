@@ -1,5 +1,5 @@
 /*!
- * Vue-Lazyload.js v1.3.3
+ * Vue-Lazyload.js v1.3.3-fix-1
  * (c) 2020 Awe <hilongjw@gmail.com>
  * Released under the MIT License.
  */
@@ -452,16 +452,12 @@ function supportWebp() {
   if (!inBrowser) return false;
 
   var support = true;
-  var d = document;
-
   try {
-    var el = d.createElement('object');
-    el.type = 'image/webp';
-    el.style.visibility = 'hidden';
-    el.innerHTML = '!';
-    d.body.appendChild(el);
-    support = !el.offsetWidth;
-    d.body.removeChild(el);
+    var elem = document.createElement('canvas');
+
+    if (!!(elem.getContext && elem.getContext('2d'))) {
+      support = elem.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+    }
   } catch (err) {
     support = false;
   }
@@ -471,8 +467,11 @@ function supportWebp() {
 
 function throttle(action, delay) {
   var timeout = null;
+  var movement = null;
   var lastRun = 0;
+  var needRun = false;
   return function () {
+    needRun = true;
     if (timeout) {
       return;
     }
@@ -488,6 +487,10 @@ function throttle(action, delay) {
       runCallback();
     } else {
       timeout = setTimeout(runCallback, delay);
+    }
+    if (needRun) {
+      clearTimeout(movement);
+      movement = setTimeout(runCallback, 2 * delay);
     }
   };
 }
@@ -964,7 +967,7 @@ var Lazy = function (Vue) {
           observerOptions = _ref.observerOptions;
       classCallCheck(this, Lazy);
 
-      this.version = '1.3.3';
+      this.version = '1.3.3-fix-1';
       this.mode = modeType.event;
       this.ListenerQueue = [];
       this.TargetIndex = 0;

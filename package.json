@@ -1,6 +1,6 @@
 {
-  "name": "vue-lazyload",
-  "version": "1.3.3",
+  "name": "@pwp-app/vue-lazyload",
+  "version": "1.3.3-fix-1",
   "description": "Vue module for lazy-loading images in your vue.js applications.",
   "main": "vue-lazyload.js",
   "module": "vue-lazyload.esm.js",
@@ -25,6 +25,9 @@
     "vue-directive"
   ],
   "author": "Awe <hilongjw@gmail.com>",
+  "maintainers": [
+    "BackRunner <dev@backrunner.top>"
+  ],
   "bugs": {
     "url": "https://github.com/hilongjw/vue-lazyload/issues"
   },
